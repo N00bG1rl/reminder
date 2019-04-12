@@ -1,9 +1,19 @@
 
+import HTTP from '../http';
+
 export default {
   namespaced: true,
   state: {
     registerEmail: 'hello you',
     registerPassword: 'world',
+  },
+  actions: {
+    register({ state }) {
+      return HTTP().post('/auth/register', {
+        email: state.registerEmail,
+        password: state.registerPassword,
+      });
+    },
   },
   mutations: {
     setRegisterEmail(state, email) {
