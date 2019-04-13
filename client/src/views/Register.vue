@@ -3,6 +3,7 @@
     <v-layout row wrap>
       <v-flex xs6 offset-xs3>
         <h1>Register</h1>
+
         <v-text-field
           label="Email"
           placeholder="Email"
@@ -19,7 +20,8 @@
           @input="setRegisterPassword"
         ></v-text-field>
 
-        <v-alert>
+        <v-alert type="error" :value="registerError">
+          {{registerError}}
         </v-alert>
 
         <v-btn color="green" dark @click="register">
@@ -39,6 +41,7 @@ export default {
     ...mapState('authentication', [
       'registerEmail',
       'registerPassword',
+      'registerError',
     ]),
   },
   methods: {
