@@ -1,5 +1,11 @@
 <template>
   <Panel title="Projects">
+    <div
+      v-for="project in projects"
+      :key="project.id"
+    >
+      {{project.title}}
+    </div>
     <v-layout row wrap>
       <v-flex xs8>
         <v-text-field
@@ -29,6 +35,7 @@ export default {
   computed: {
     ...mapState('projects', [
       'newProjectName',
+      'projects',
     ]),
   },
   methods: {
