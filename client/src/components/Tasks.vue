@@ -1,4 +1,3 @@
-
 <template>
   <Panel title="Tasks">
     <div
@@ -6,25 +5,42 @@
       v-for="task in tasks"
       :key="task.id"
     >
-    {{task.description}}
+      <EditableRecord
+        :isEditMode="task.isEditMode"
+        :title="task.description"
+        @onInput="setTaskDescription({
+          task,
+          description: $event,
+        })"
+        @onEdit="setEditMode(task)"
+        @onSave="saveTask(task)"
+        @onDelete="deleteTask(task)"
+      >
+        <v-icon
+          @click="checkClicked(task)">
+          {{ task.completed ? 'check_box' : 'check_box_outline_blank'}}
+        </v-icon>
+      </EditableRecord>
     </div>
 
     <CreateRecord
-      placeholder="Add list"
+      placeholder="I need to..."
       @onInput="setNewTaskName"
       :value="newTaskName"
       @create="createTask"
     />
-  </panel>
+  </Panel>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
 import CreateRecord from '@/components/CreateRecord.vue';
+import EditableRecord from '@/components/EditableRecord.vue';
 
 export default {
   components: {
     CreateRecord,
+    EditableRecord,
   },
   computed: {
     ...mapState('tasks', [
@@ -35,14 +51,22 @@ export default {
   methods: {
     ...mapActions('tasks', [
       'createTask',
+      'deleteTask',
+      'saveTask',
     ]),
     ...mapMutations('tasks', [
       'setNewTaskName',
+      'setTaskDescription',
+      'setEditMode',
+      'toggleCompleted',
     ]),
+    checkClicked(task) {
+      this.toggleCompleted(task);
+      this.saveTask(task);
+    },
   },
 };
 </script>
 
 <style>
-
 </style>
